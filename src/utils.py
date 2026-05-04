@@ -109,9 +109,9 @@ def generate_pages_recursive(dir_path, template_path, dest_dir, basepath="/"):
             if os.path.exists(parent_path) is False:
                 os.makedirs(parent_path)
             dest_path = os.path.join(parent_path, file_name[:-3] + ".html")
-            generate_page(dir_path, template_path, dest_path)
+            generate_page(dir_path, template_path, dest_path, basepath)
     else:
         items_in_dir = os.listdir(dir_path)
         for item in items_in_dir:
             item_path = os.path.join(dir_path, item)
-            generate_pages_recursive(item_path, template_path, dest_dir)
+            generate_pages_recursive(item_path, template_path, dest_dir, basepath)
