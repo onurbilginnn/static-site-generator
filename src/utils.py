@@ -85,7 +85,7 @@ def extract_title(markdown):
             return block[2:].strip()
     raise Exception("There is no header present!")
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath="/"):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     markdown_text = ""
     template_text = ""
@@ -97,10 +97,11 @@ def generate_page(from_path, template_path, dest_path):
     html = html_node.to_html()
     title = extract_title(markdown_text)
     modified_template = template_text.replace("{{ Title }}", title).replace("{{ Content }}", html)
+    modified_path_template = modified_template.replace("href=\"/", f"href=\"{basepath}").replace("src=\"/", f"src=\"{basepath}")
     with open(dest_path, "w") as dest_file:
-        dest_file.write(modified_template)
+        dest_file.write(modified_path_template)
 
-def generate_pages_recursive(dir_path, template_path, dest_dir):
+def generate_pages_recursive(dir_path, template_path, dest_dir, basepath="/"):
     if os.path.isfile(dir_path):
         if dir_path.endswith(".md"):
             file_name = os.path.basename(dir_path)
